@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Up to 20 Million Doses Administered After Health Canada Received a Myocarditis Warning, and Before the Public Was Told</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0d1b2a;--slate:#4a5568;--muted:#718096;
+  --border:#e2e8f0;--bg:#f7f8fa;--white:#ffffff;
+  --bar:#334e68;
+  --c1:#2563eb;--c2:#dc2626;--c3:#d97706;--c4:#7c3aed;--c5:#059669;--c6:#be123c;
+  --dom:#1a56a0;--fgn:#64a8d8;
+  --serif:'Libre Baskerville',Georgia,serif;
+  --sans:'IBM Plex Sans',system-ui,sans-serif;
+  --mono:'IBM Plex Mono',monospace;
+}
+body{font-family:var(--sans);background:var(--white);color:var(--navy);line-height:1.6;font-size:15px;}
+
+/* HEADER */
+header{background:var(--navy);color:white;padding:2.5rem 2rem 2rem;border-bottom:4px solid #2563eb;}
+.header-inner{max-width:1060px;margin:0 auto;}
+.session-tag{font-family:var(--mono);font-size:10px;color:#7fb3d3;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.85rem;display:flex;gap:1.5rem;flex-wrap:wrap;}
+.session-tag span::before{content:'▸ ';opacity:.5;}
+h1{font-family:var(--serif);font-size:clamp(1.35rem,2.5vw,1.85rem);font-weight:700;line-height:1.2;margin-bottom:.8rem;max-width:720px;}
+.subtitle{font-size:.88rem;color:#94b8d0;max-width:680px;line-height:1.7;font-weight:300;}
+.subtitle strong{color:#c8dfee;font-weight:500;}
+.nuance{background:rgba(255,255,255,.06);border-left:3px solid #2563eb;padding:.8rem 1.1rem;margin-top:1.3rem;font-size:.8rem;color:#a8c8de;line-height:1.65;max-width:680px;border-radius:0 5px 5px 0;}
+.nuance strong{color:#c8dde8;}
+
+main{max-width:1060px;margin:0 auto;padding:2rem 2rem 4rem;}
+
+/* STAT CARDS */
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.75rem;margin-bottom:2rem;}
+@media(max-width:680px){.stats-grid{grid-template-columns:1fr 1fr;}}
+.stat-card{background:var(--white);border:1px solid var(--border);border-radius:8px;padding:1rem 1.2rem;position:relative;overflow:hidden;}
+.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
+.stat-card:nth-child(1)::before{background:var(--navy);}
+.stat-card:nth-child(2)::before{background:var(--dom);}
+.stat-card:nth-child(3)::before{background:var(--fgn);}
+.stat-card:nth-child(4)::before{background:var(--c4);}
+.stat-label{font-size:.68rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:.35rem;}
+.stat-num{font-family:var(--mono);font-size:1.85rem;font-weight:500;line-height:1;color:var(--navy);}
+.stat-card:nth-child(4) .stat-num{color:var(--c4);}
+.stat-detail{font-size:.72rem;color:var(--muted);margin-top:.25rem;}
+
+/* QUOTE BOXES */
+.quotes-section{display:grid;grid-template-columns:repeat(2,1fr);gap:.75rem;margin-bottom:1rem;}
+@media(max-width:680px){.quotes-section{grid-template-columns:1fr;}}
+.quote-box{background:var(--white);border:1px solid var(--border);border-radius:8px;padding:1.2rem 1.4rem;border-left:3px solid var(--navy);}
+.quote-date{font-family:var(--mono);font-size:.7rem;color:var(--muted);letter-spacing:.06em;margin-bottom:.5rem;}
+.quote-text{font-family:var(--serif);font-size:.9rem;line-height:1.65;color:var(--navy);margin-bottom:.7rem;font-style:italic;}
+.quote-source{font-size:.72rem;color:var(--muted);}
+.quote-source a{color:var(--muted);text-decoration:underline;text-underline-offset:2px;}
+.quote-source a:hover{color:var(--navy);}
+
+
+.chart-section{background:var(--white);border:1px solid var(--border);border-radius:8px;padding:1.5rem 1.5rem 1.25rem;margin-bottom:1rem;}
+.chart-title{font-family:var(--serif);font-size:1.05rem;font-weight:700;color:var(--navy);margin-bottom:.2rem;}
+.chart-sub{font-size:.78rem;color:var(--muted);margin-bottom:1rem;}
+
+/* QUESTION BUTTONS */
+.q-label{font-size:.68rem;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:.7rem;}
+.q-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.55rem;margin-bottom:1.25rem;}
+@media(max-width:760px){.q-grid{grid-template-columns:1fr 1fr;}}
+@media(max-width:480px){.q-grid{grid-template-columns:1fr;}}
+
+.q-btn{
+  background:var(--white);border:1.5px solid var(--border);border-radius:8px;
+  padding:.8rem .9rem .8rem 2.4rem;
+  cursor:pointer;text-align:left;
+  font-family:var(--sans);font-size:.78rem;color:var(--slate);
+  line-height:1.4;transition:border-color .15s,background .15s;
+  position:relative;user-select:none;
+}
+.q-btn::before{
+  content:attr(data-num);position:absolute;left:.7rem;top:50%;transform:translateY(-50%);
+  font-family:var(--mono);font-size:.68rem;font-weight:500;
+  width:1.25rem;height:1.25rem;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--border);color:var(--slate);transition:all .15s;
+  line-height:1;text-align:center;
+}
+.q-btn:hover{border-color:#cbd5e0;background:#fafafa;}
+.q-btn.active{border-width:2px;font-weight:500;}
+.q-btn[data-id="1"].active{border-color:var(--c1);color:var(--c1);}
+.q-btn[data-id="1"].active::before{background:var(--c1);color:white;}
+.q-btn[data-id="2"].active{border-color:var(--c2);color:var(--c2);}
+.q-btn[data-id="2"].active::before{background:var(--c2);color:white;}
+.q-btn[data-id="3"].active{border-color:var(--c3);color:var(--c3);}
+.q-btn[data-id="3"].active::before{background:var(--c3);color:white;}
+.q-btn[data-id="4"].active{border-color:var(--c4);color:var(--c4);}
+.q-btn[data-id="4"].active::before{background:var(--c4);color:white;}
+.q-btn[data-id="5"].active{border-color:var(--c5);color:var(--c5);}
+.q-btn[data-id="5"].active::before{background:var(--c5);color:white;}
+.q-btn[data-id="6"].active{border-color:var(--c6);color:var(--c6);}
+.q-btn[data-id="6"].active::before{background:var(--c6);color:white;}
+
+.chart-hint{font-size:.7rem;color:var(--muted);margin-bottom:.6rem;font-style:italic;}
+.chart-wrap{position:relative;}
+.chart-container{position:relative;height:340px;}
+
+/* ── FULL TIMELINE CHART ── */
+.full-section{background:var(--white);border:1px solid var(--border);border-radius:8px;padding:1.5rem 1.5rem 1.25rem;margin-top:1.75rem;}
+.toggle-row{display:flex;gap:.65rem;margin-bottom:1rem;align-items:center;flex-wrap:wrap;}
+.toggle-label{font-size:.68rem;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);}
+
+.t-btn{
+  background:var(--white);border:2px solid var(--border);border-radius:6px;
+  padding:.45rem 1rem;cursor:pointer;
+  font-family:var(--sans);font-size:.8rem;font-weight:500;
+  color:var(--slate);transition:all .15s;user-select:none;
+  display:flex;align-items:center;gap:.5rem;
+}
+.t-btn .t-dot{width:10px;height:10px;border-radius:2px;flex-shrink:0;}
+.t-btn:hover{border-color:#cbd5e0;}
+.t-btn.dom-active{border-color:var(--dom);color:var(--dom);background:#f0f5ff;}
+.t-btn.fgn-active{border-color:var(--fgn);color:#1a6896;background:#f0f7ff;}
+.t-btn.dom-active .t-dot{background:var(--dom);}
+.t-btn.fgn-active .t-dot{background:var(--fgn);}
+.t-btn:not(.dom-active):not(.fgn-active) .t-dot{background:var(--border);}
+
+.full-chart-container{position:relative;height:260px;}
+
+/* SOURCE */
+/* DOWNLOAD */
+.download-section{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:1.35rem 1.5rem;margin-top:1.75rem;}
+.dl-title{font-family:var(--serif);font-size:.95rem;font-weight:700;color:var(--navy);margin-bottom:.3rem;}
+.dl-sub{font-size:.78rem;color:var(--muted);line-height:1.6;margin-bottom:1rem;}
+.dl-row{display:flex;gap:.75rem;flex-wrap:wrap;margin-bottom:.85rem;}
+.dl-btn{display:inline-flex;align-items:center;gap:.55rem;padding:.6rem 1.1rem;border-radius:6px;font-family:var(--sans);font-size:.8rem;font-weight:500;text-decoration:none;border:1.5px solid;transition:all .15s;cursor:pointer;}
+.dl-btn .dl-meta{font-size:.7rem;font-weight:400;opacity:.75;margin-left:.25rem;}
+.dom-dl{background:#f0f5ff;border-color:var(--dom);color:var(--dom);}
+.dom-dl:hover{background:#dbeafe;}
+.fgn-dl{background:#f0f7ff;border-color:var(--fgn);color:#1a6896;}
+.fgn-dl:hover{background:#dbeeff;}
+.dl-note{font-size:.72rem;color:var(--muted);line-height:1.6;border-top:1px solid var(--border);padding-top:.75rem;}
+
+.source-note{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:1rem 1.25rem;font-size:.75rem;color:var(--muted);line-height:1.7;margin-top:1rem;}
+.source-note strong{color:var(--slate);}
+.source-note a{color:var(--navy);}
+
+footer{border-top:1px solid var(--border);padding:1.25rem 2rem;text-align:center;font-size:.72rem;color:var(--muted);max-width:1060px;margin:0 auto;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="session-tag">
+      <span>Sessional Paper 8555-451-766</span>
+      <span>45th Parliament, 1st Session</span>
+      <span>Tabled March 11, 2026</span>
+      <span>Q-766 — Ted Falk (Provencher)</span>
+    </div>
+    <h1>Up to 20 Million Doses Were Administered After Health Canada Received a Myocarditis Warning, and Before the Public Was Told</h1>
+    <p class="subtitle">
+      <strong>31,659 adverse event reports</strong> of myocarditis and pericarditis following COVID-19 vaccination, disclosed through Written Question Q-766 in the House of Commons. Click each question to mark it on the timeline.
+    </p>
+    <div class="nuance">
+      <strong>Context:</strong> COVID-19 vaccines are effective and have saved lives. This analysis examines one question: whether Canadians received timely information about a known cardiac risk — the standard applied to every other vaccine in Canada's history. All data is drawn directly from the Government of Canada's parliamentary response.
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-label">Total Reports Filed</div>
+      <div class="stat-num">31,659</div>
+      <div class="stat-detail">Myocarditis &amp; pericarditis following COVID-19 vaccination</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Canadian (Domestic)</div>
+      <div class="stat-num">2,040</div>
+      <div class="stat-detail">Canada Vigilance Program</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">International</div>
+      <div class="stat-num">29,619</div>
+      <div class="stat-detail">Mandatory manufacturer submissions</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Before First Public Warning</div>
+      <div class="stat-num">797</div>
+      <div class="stat-detail">Reports in database before June 3, 2021</div>
+    </div>
+  </div>
+
+  <!-- NARRATIVE CHART -->
+  <div class="chart-section">
+    <div class="chart-title">The Signal Timeline: Dec 2020 – Jul 2021</div>
+    <div class="chart-sub">Combined monthly reports. Click each question to place it on the chart — the flag travels to your most recent selection.</div>
+
+    <div class="q-label">Click to explore the timeline</div>
+    <div class="q-grid">
+      <button class="q-btn" data-id="1" data-num="1" onclick="toggleEvent(1,this)">When did vaccination begin in Canada?</button>
+      <button class="q-btn" data-id="2" data-num="2" onclick="toggleEvent(2,this)">When was the first myocarditis case reported in Canada?</button>
+      <button class="q-btn" data-id="3" data-num="3" onclick="toggleEvent(3,this)">When did Israel flag myocarditis to Health Canada?</button>
+      <button class="q-btn" data-id="4" data-num="4" onclick="toggleEvent(4,this)">When did Canada attend an international pharmacovigilance meeting?</button>
+      <button class="q-btn" data-id="5" data-num="5" onclick="toggleEvent(5,this)">When did Canada first warn the public about cardiac risks?</button>
+      <button class="q-btn" data-id="6" data-num="6" onclick="toggleEvent(6,this)">How many reports triggered the RotaShield withdrawal?</button>
+    </div>
+
+    <div class="chart-hint">Hover bars for monthly totals. Active poles show as solid; previous poles remain as faint markers.</div>
+    <div class="chart-container"><canvas id="narrativeChart"></canvas></div>
+  </div>
+
+  <!-- PUBLIC STATEMENTS -->
+  <div class="quotes-section">
+    <div class="quote-box">
+      <div class="quote-date">February 27, 2021</div>
+      <div class="quote-text">"To date, no unexpected vaccine safety issues have been identified."</div>
+      <div class="quote-source">— Dr. Theresa Tam, Chief Public Health Officer of Canada · <a href="https://www.canada.ca/en/public-health/news/2021/02/statement-from-the-chief-public-health-officer-of-canada-on-february-27-2021.html" target="_blank">canada.ca</a></div>
+    </div>
+    <div class="quote-box">
+      <div class="quote-date">March 25, 2021</div>
+      <div class="quote-text">"We now have multiple safe and effective COVID-19 vaccines with unique advantages that are authorised for use in Canada."</div>
+      <div class="quote-source">— Dr. Theresa Tam, Chief Public Health Officer of Canada · <a href="https://www.canada.ca/en/public-health/news/2021/03/statement-from-the-chief-public-health-officer-of-canada-on-march-25-2021.html" target="_blank">canada.ca</a></div>
+    </div>
+    <div class="quote-box">
+      <div class="quote-date">May 4, 2021</div>
+      <div class="quote-text">"All vaccines approved for use in this country are safe and effective."</div>
+      <div class="quote-source">— Prime Minister Justin Trudeau & Dr. Theresa Tam, COVID-19 briefing · <a href="https://www.cbc.ca/news/politics/trudeau-tam-safe-effective-naci-1.6013297" target="_blank">CBC News</a></div>
+    </div>
+    <div class="quote-box">
+      <div class="quote-date">May 22, 2021</div>
+      <div class="quote-text">"Multiple safe and effective COVID-19 vaccines, with unique advantages, are authorised for use in Canada."</div>
+      <div class="quote-source">— Dr. Theresa Tam, Chief Public Health Officer of Canada · <a href="https://www.miragenews.com/statement-from-chief-public-health-officer-of-564760/" target="_blank">PHAC Statement</a></div>
+    </div>
+  </div>
+
+  <!-- FULL TIMELINE CHART -->
+  <div class="full-section">
+    <div class="chart-title">Full Report Timeline: Dec 2020 – Jan 2026</div>
+    <div class="chart-sub">Toggle each dataset to compare domestic and international reporting at scale.</div>
+    <div class="toggle-row">
+      <span class="toggle-label">Show:</span>
+      <button class="t-btn dom-active" id="domBtn" onclick="toggleFull('dom')">
+        <span class="t-dot"></span> Canadian (Domestic) — 2,040 reports
+      </button>
+      <button class="t-btn fgn-active" id="fgnBtn" onclick="toggleFull('fgn')">
+        <span class="t-dot"></span> International — 29,619 reports
+      </button>
+    </div>
+    <div class="full-chart-container"><canvas id="fullChart"></canvas></div>
+  </div>
+
+  <!-- DOWNLOAD -->
+  <div class="download-section">
+    <div class="dl-title">Download the raw data</div>
+    <div class="dl-sub">Complete adverse event records as disclosed in Sessional Paper 8555-451-766. Each row is one report submitted to Health Canada's Canada Vigilance Program.</div>
+    <div class="dl-row">
+      <a class="dl-btn dom-dl" href="q766_domestic.csv" download="q766_domestic.csv">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Canadian domestic reports
+        <span class="dl-meta">2,040 rows · CSV · 239 KB</span>
+      </a>
+      <a class="dl-btn fgn-dl" href="q766_foreign.csv" download="q766_foreign.csv">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        International reports
+        <span class="dl-meta">29,619 rows · CSV · 3.4 MB</span>
+      </a>
+    </div>
+    <div class="dl-note">Columns: Adverse Reaction Report Number · Reporter type · Form of notification · Recipient · Date received. Notifier names are protected under the Privacy Act. Data as of January 26, 2026.</div>
+  </div>
+
+  <div class="source-note">
+    <strong>Source:</strong> Sessional Paper 8555-451-766, tabled March 11, 2026. Written Question Q-766 (45th Parliament, 1st Session), asked by Ted Falk (Provencher), January 22, 2026. Reply by Minister of Health; signatory Maggie Chi. Data as of January 26, 2026. &nbsp;
+    <a href="https://www.ourcommons.ca/written-questions/45-1/q-766/13960253" target="_blank">ourcommons.ca/written-questions/45-1/q-766/13960253</a>
+  </div>
+</main>
+
+<footer>
+  All figures drawn directly from Government of Canada parliamentary disclosures. Submission of an adverse event report does not imply confirmed causality.
+</footer>
+
+<script>
+// ── ALL DATA ──
+const ALL_DATA = [
+  {m:"2020-09",d:0,f:0},{m:"2020-10",d:0,f:2},{m:"2020-11",d:0,f:1},
+  {m:"2020-12",d:1,f:5},{m:"2021-01",d:1,f:21},{m:"2021-02",d:0,f:56},
+  {m:"2021-03",d:2,f:107},{m:"2021-04",d:3,f:211},{m:"2021-05",d:4,f:392},
+  {m:"2021-06",d:21,f:896},{m:"2021-07",d:37,f:1609},
+  {m:"2021-08",d:27,f:1880},{m:"2021-09",d:20,f:2182},{m:"2021-10",d:24,f:2161},
+  {m:"2021-11",d:28,f:2521},{m:"2021-12",d:722,f:3059},
+  {m:"2022-01",d:20,f:2558},{m:"2022-02",d:13,f:2139},{m:"2022-03",d:10,f:1527},
+  {m:"2022-04",d:13,f:1166},{m:"2022-05",d:20,f:832},{m:"2022-06",d:27,f:725},
+  {m:"2022-07",d:29,f:504},{m:"2022-08",d:27,f:432},{m:"2022-09",d:33,f:364},
+  {m:"2022-10",d:44,f:377},{m:"2022-11",d:34,f:319},{m:"2022-12",d:29,f:328},
+  {m:"2023-01",d:27,f:252},{m:"2023-02",d:28,f:215},{m:"2023-03",d:21,f:175},
+  {m:"2023-04",d:22,f:147},{m:"2023-05",d:21,f:127},{m:"2023-06",d:27,f:134},
+  {m:"2023-07",d:22,f:121},{m:"2023-08",d:25,f:95},{m:"2023-09",d:21,f:97},
+  {m:"2023-10",d:24,f:93},{m:"2023-11",d:20,f:72},{m:"2023-12",d:27,f:79},
+  {m:"2024-01",d:24,f:65},{m:"2024-02",d:18,f:60},{m:"2024-03",d:19,f:41},
+  {m:"2024-04",d:14,f:32},{m:"2024-05",d:13,f:18},{m:"2024-06",d:11,f:12},
+  {m:"2024-07",d:14,f:7},{m:"2024-08",d:7,f:3},{m:"2024-09",d:6,f:4},
+  {m:"2024-10",d:4,f:2},{m:"2024-11",d:4,f:1},{m:"2024-12",d:3,f:0},
+  {m:"2025-01",d:2,f:1},{m:"2025-02",d:2,f:0},{m:"2025-03",d:1,f:0},
+  {m:"2025-05",d:1,f:0},{m:"2025-07",d:1,f:0}
+];
+
+// Narrative chart: Sep 2020 through Jul 2021
+const NAR_DATA = ALL_DATA.filter(d => d.m >= "2020-09" && d.m <= "2021-07");
+
+const MO = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+function fmt(m){ const [y,mo]=m.split('-'); return MO[+mo-1]+' '+y.slice(2); }
+
+// ── EVENTS ──
+const EVENTS = {
+  1:{type:'v',month:'2020-12',pxOff:-6,color:'#2563eb',title:'Vaccinations begin in Canada',
+     lines:['Pfizer-BioNTech authorized Dec 9, 2020.','Moderna authorized Dec 23, 2020.','First doses administered mid-December.']},
+  2:{type:'v',month:'2020-12',pxOff:6,color:'#dc2626',title:'First myocarditis report in Canada',
+     lines:['Dec 2020: First myocarditis/pericarditis','report received by Canada Vigilance —','the same month vaccinations began.']},
+  3:{type:'v',month:'2021-02',pxOff:0,color:'#d97706',title:'Israel flags myocarditis to Health Canada',
+     lines:['Feb 2021: Health Canada received formal','notification from Israeli Ministry of Health','of a myocarditis/pericarditis safety signal.','82 reports already in the database.']},
+  4:{type:'v',month:'2021-03',pxOff:0,color:'#7c3aed',title:'Canada attends pharmacovigilance conference',
+     lines:['Mar 3, 2021: Health Canada attended the','Pharmacovigilance Cluster. Myocarditis','added to agenda. ~110 reports in database.','Canada reported only 3 domestic cases.','Agencies committed to "continue monitoring."']},
+  5:{type:'v',month:'2021-06',pxOff:0,color:'#059669',title:'First public warning issued',
+     lines:['Jun 3, 2021: First communiqué sent to','health practitioners — 4 months after the','Israeli notification and 3 months after the','international meeting. 797 reports were','already in the database by this date.','Product labels updated Jun 30, 2021.']},
+  6:{type:'h',yVal:15,color:'#be123c',title:'RotaShield: suspended at 15 reports',
+     lines:['In 1999, RotaShield vaccine was suspended','after only 15 intussusception reports to VAERS.','Full market withdrawal followed within months.','Risk per 10,000 doses was comparable to','myocarditis risk in young males from mRNA vaccines.']}
+};
+
+// ── POLE PLUGIN ──
+let activeSet = new Set();
+let flagOwner = null;
+
+function roundRect(ctx,x,y,w,h,r){
+  ctx.beginPath();
+  ctx.moveTo(x+r,y); ctx.lineTo(x+w-r,y);
+  ctx.quadraticCurveTo(x+w,y,x+w,y+r);
+  ctx.lineTo(x+w,y+h-r);
+  ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);
+  ctx.lineTo(x+r,y+h);
+  ctx.quadraticCurveTo(x,y+h,x,y+h-r);
+  ctx.lineTo(x,y+r);
+  ctx.quadraticCurveTo(x,y,x+r,y);
+  ctx.closePath();
+}
+
+function drawFlag(ctx, poleX, topY, area, color, ev) {
+  const PAD = 11;
+  const LH = 16;
+  const TH = 17;
+  const GAP = 5;
+  const MAXW = 260;
+  const TOPBAR = 4;
+
+  // Measure
+  ctx.font = '600 11px "IBM Plex Sans", sans-serif';
+  const titleW = ctx.measureText(ev.title).width;
+  ctx.font = '400 10px "IBM Plex Sans", sans-serif';
+  const bodyW = Math.max(...ev.lines.map(l => ctx.measureText(l).width));
+  const fw = Math.min(MAXW, Math.max(titleW, bodyW) + PAD * 2);
+  const fh = TOPBAR + PAD + TH + GAP + ev.lines.length * LH + PAD;
+
+  // Clamp x
+  let fx = poleX - fw / 2;
+  fx = Math.max(area.left + 2, Math.min(fx, area.right - fw - 2));
+  const fy = topY + 4;
+
+  // Shadow
+  ctx.save();
+  ctx.shadowColor = 'rgba(0,0,0,0.13)';
+  ctx.shadowBlur = 10;
+  ctx.shadowOffsetY = 3;
+  roundRect(ctx, fx, fy, fw, fh, 6);
+  ctx.fillStyle = '#ffffff';
+  ctx.fill();
+  ctx.restore();
+
+  // Border
+  ctx.save();
+  ctx.strokeStyle = color;
+  ctx.lineWidth = 1.5;
+  roundRect(ctx, fx, fy, fw, fh, 6);
+  ctx.stroke();
+
+  // Coloured top strip
+  ctx.save();
+  ctx.beginPath(); ctx.rect(fx, fy, fw, TOPBAR+6);
+  ctx.clip();
+  roundRect(ctx, fx, fy, fw, TOPBAR+6, 6);
+  ctx.fillStyle = color; ctx.fill();
+  ctx.restore();
+
+  // Title
+  ctx.font = '600 11px "IBM Plex Sans", sans-serif';
+  ctx.fillStyle = color;
+  ctx.fillText(ev.title, fx + PAD, fy + TOPBAR + PAD + 11);
+
+  // Body
+  ctx.font = '400 10px "IBM Plex Sans", sans-serif';
+  ctx.fillStyle = '#374151';
+  ev.lines.forEach((line, i) => {
+    ctx.fillText(line, fx + PAD, fy + TOPBAR + PAD + TH + GAP + i * LH + 11);
+  });
+
+  // Pointer triangle
+  const ptX = Math.max(fx + 10, Math.min(poleX, fx + fw - 10));
+  ctx.beginPath();
+  ctx.moveTo(ptX - 6, fy + fh);
+  ctx.lineTo(ptX + 6, fy + fh);
+  ctx.lineTo(ptX, fy + fh + 7);
+  ctx.closePath();
+  ctx.fillStyle = '#ffffff'; ctx.fill();
+  ctx.strokeStyle = color; ctx.lineWidth = 1.5; ctx.stroke();
+
+  ctx.restore();
+}
+
+const polePlugin = {
+  id:'polePlugin',
+  afterDraw(chart) {
+    if (chart.canvas.id !== 'narrativeChart') return;
+    const ctx = chart.ctx;
+    const area = chart.chartArea;
+    const xScale = chart.scales.x;
+    const yScale = chart.scales.y;
+    const sorted = [...activeSet].sort((a,b) => a-b);
+
+    sorted.forEach(id => {
+      const ev = EVENTS[id];
+      const isFlag = id === flagOwner;
+      const color = ev.color;
+
+      if (ev.type === 'v') {
+        const idx = NAR_DATA.findIndex(d => d.m === ev.month);
+        if (idx < 0) return;
+        const x = xScale.getPixelForValue(idx) + (ev.pxOff||0);
+        ctx.save();
+        ctx.strokeStyle = color;
+        ctx.lineWidth = isFlag ? 2 : 1.5;
+        ctx.globalAlpha = isFlag ? 1 : 0.3;
+        ctx.setLineDash(isFlag ? [] : [4,3]);
+        ctx.beginPath(); ctx.moveTo(x, area.bottom); ctx.lineTo(x, area.top+2); ctx.stroke();
+        ctx.restore();
+        if (isFlag) drawFlag(ctx, x, area.top, area, color, ev);
+
+      } else if (ev.type === 'h') {
+        const y = yScale.getPixelForValue(ev.yVal);
+        const stubX = area.left + 24;
+        ctx.save();
+        ctx.strokeStyle = color;
+        ctx.lineWidth = isFlag ? 2 : 1.5;
+        ctx.globalAlpha = isFlag ? 1 : 0.3;
+        ctx.setLineDash([6,4]);
+        ctx.beginPath(); ctx.moveTo(area.left, y); ctx.lineTo(area.right, y); ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.lineWidth = isFlag ? 2 : 1.5;
+        ctx.beginPath(); ctx.moveTo(stubX, y); ctx.lineTo(stubX, area.top+2); ctx.stroke();
+        ctx.restore();
+        if (isFlag) drawFlag(ctx, stubX, area.top, area, color, ev);
+      }
+    });
+  }
+};
+
+function toggleEvent(id, btn) {
+  if (activeSet.has(id)) {
+    activeSet.delete(id);
+    btn.classList.remove('active');
+    flagOwner = activeSet.size ? Math.max(...activeSet) : null;
+  } else {
+    activeSet.add(id);
+    btn.classList.add('active');
+    flagOwner = id;
+  }
+  narrativeChart.update('none');
+}
+
+// ── NARRATIVE CHART ──
+const narCtx = document.getElementById('narrativeChart').getContext('2d');
+const narrativeChart = new Chart(narCtx, {
+  type:'bar',
+  data:{
+    labels: NAR_DATA.map(d => fmt(d.m)),
+    datasets:[{
+      label:'Total reports',
+      data: NAR_DATA.map(d => d.d + d.f),
+      backgroundColor:'rgba(51, 78, 104, 0.82)',
+      borderWidth:0,
+      borderRadius:2
+    }]
+  },
+  options:{
+    responsive:true, maintainAspectRatio:false, animation:false,
+    plugins:{
+      legend:{display:false},
+      tooltip:{
+        callbacks:{
+          title: items => NAR_DATA[items[0].dataIndex].m,
+          label: items => {
+            const d = NAR_DATA[items[0].dataIndex];
+            return [` Domestic: ${d.d}`, ` International: ${d.f}`, ` Total: ${d.d+d.f}`];
+          }
+        },
+        backgroundColor:'#0d1b2a',
+        titleFont:{family:"'IBM Plex Mono'",size:11},
+        bodyFont:{family:"'IBM Plex Sans'",size:11},
+        padding:10
+      }
+    },
+    scales:{
+      x:{
+        grid:{display:false},
+        ticks:{font:{family:"'IBM Plex Mono'",size:10},color:'#718096',maxRotation:45}
+      },
+      y:{
+        grid:{color:'rgba(0,0,0,0.04)'},
+        ticks:{font:{family:"'IBM Plex Mono'",size:10},color:'#718096'},
+        title:{display:true,text:'Reports',font:{family:"'IBM Plex Sans'",size:10},color:'#718096'}
+      }
+    }
+  },
+  plugins:[polePlugin]
+});
+
+// ── FULL TIMELINE CHART ──
+let domVisible = true;
+let fgnVisible = true;
+
+const fullCtx = document.getElementById('fullChart').getContext('2d');
+const fullChart = new Chart(fullCtx, {
+  type:'bar',
+  data:{
+    labels: ALL_DATA.filter(d => d.m >= '2020-12').map(d => fmt(d.m)),
+    datasets:[
+      {
+        label:'Canadian (Domestic)',
+        data: ALL_DATA.filter(d => d.m >= '2020-12').map(d => d.d),
+        backgroundColor:'rgba(26, 86, 160, 0.85)',
+        borderWidth:0, borderRadius:1, stack:'s'
+      },
+      {
+        label:'International',
+        data: ALL_DATA.filter(d => d.m >= '2020-12').map(d => d.f),
+        backgroundColor:'rgba(100, 168, 216, 0.75)',
+        borderWidth:0, borderRadius:1, stack:'s'
+      }
+    ]
+  },
+  options:{
+    responsive:true, maintainAspectRatio:false, animation:{duration:300},
+    plugins:{
+      legend:{display:false},
+      tooltip:{
+        callbacks:{
+          title: items => {
+            const full = ALL_DATA.filter(d=>d.m>='2020-12');
+            return full[items[0].dataIndex].m;
+          },
+          label: ctx => ` ${ctx.dataset.label}: ${ctx.parsed.y}`
+        },
+        backgroundColor:'#0d1b2a',
+        titleFont:{family:"'IBM Plex Mono'",size:11},
+        bodyFont:{family:"'IBM Plex Sans'",size:11},
+        padding:10
+      }
+    },
+    scales:{
+      x:{
+        stacked:true, grid:{display:false},
+        ticks:{font:{family:"'IBM Plex Mono'",size:9},color:'#718096',maxRotation:45,autoSkip:true,maxTicksLimit:20}
+      },
+      y:{
+        stacked:true, grid:{color:'rgba(0,0,0,0.04)'},
+        ticks:{font:{family:"'IBM Plex Mono'",size:10},color:'#718096'},
+        title:{display:true,text:'Reports',font:{family:"'IBM Plex Sans'",size:10},color:'#718096'}
+      }
+    }
+  }
+});
+
+function toggleFull(which) {
+  const domBtn = document.getElementById('domBtn');
+  const fgnBtn = document.getElementById('fgnBtn');
+
+  if (which === 'dom') {
+    domVisible = !domVisible;
+    domBtn.classList.toggle('dom-active', domVisible);
+    fullChart.data.datasets[0].backgroundColor = domVisible
+      ? 'rgba(26, 86, 160, 0.85)'
+      : 'rgba(26, 86, 160, 0.07)';
+  } else {
+    fgnVisible = !fgnVisible;
+    fgnBtn.classList.toggle('fgn-active', fgnVisible);
+    fullChart.data.datasets[1].backgroundColor = fgnVisible
+      ? 'rgba(100, 168, 216, 0.75)'
+      : 'rgba(100, 168, 216, 0.07)';
+  }
+  fullChart.update();
+}
+</script>
+</body>
+</html>
